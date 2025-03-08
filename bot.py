@@ -1762,6 +1762,10 @@ class ModmailBot(commands.Bot):
                     name += f"-{author.discriminator}"
                 new_name = name
 
+        config_manager = self.config
+        config_manager['ticket_number'] += 1
+        await config_manager.update()
+
         counter = 1
         existed = set(c.name for c in guild.text_channels if c != exclude_channel)
         while new_name in existed:
