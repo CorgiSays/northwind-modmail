@@ -1350,7 +1350,7 @@ class ModmailBot(commands.Bot):
 
     async def updateticket(self):
         config_manager = self.config
-        config_manager['ticket_number'] += 1
+        config_manager['ticket_number'] += int(config_manager['ticket_number']) + 1
         await config_manager.update()
 
     async def on_guild_channel_delete(self, channel):
