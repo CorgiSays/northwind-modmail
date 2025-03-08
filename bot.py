@@ -1750,7 +1750,7 @@ class ModmailBot(commands.Bot):
                 ticket_num = int(self.config['ticket_number']) + int(self._tinum)
                 name = new_name = f'ticket-{str(ticket_num)}'
                 self._tinum += 1
-                self.updateticket()
+                asyncio.create_task(self.updateticket())
             elif self.config["use_timestamp_channel_name"]:
                 name = new_name = author.created_at.isoformat(sep="-", timespec="minutes")
             else:
