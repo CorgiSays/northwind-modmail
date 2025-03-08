@@ -1348,6 +1348,11 @@ class ModmailBot(commands.Bot):
         if self.config["transfer_reactions"]:
             await self.handle_reaction_events(payload)
 
+    async def updateticket(self):
+        config_manager = self.config
+        config_manager['ticket_number'] += 1
+        await config_manager.update()
+
     async def on_guild_channel_delete(self, channel):
         if channel.guild != self.modmail_guild:
             return
@@ -1745,6 +1750,7 @@ class ModmailBot(commands.Bot):
                 ticket_num = int(self.config['ticket_number']) + int(self._tinum)
                 name = new_name = f'ticket-{str(ticket_num)}'
                 self._tinum += 1
+                self.updateticket()
             elif self.config["use_timestamp_channel_name"]:
                 name = new_name = author.created_at.isoformat(sep="-", timespec="minutes")
             else:
@@ -1761,10 +1767,6 @@ class ModmailBot(commands.Bot):
                 if author.discriminator != "0":
                     name += f"-{author.discriminator}"
                 new_name = name
-
-        config_manager = self.config
-        config_manager['ticket_number'] += 1
-        await config_manager.update()
 
         counter = 1
         existed = set(c.name for c in guild.text_channels if c != exclude_channel)
